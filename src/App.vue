@@ -1,17 +1,30 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
+  <img
+    alt="Vue logo"
+    src="./assets/logo.png"
+  >
   <div class="test-area">
     <custom-input
-      v-model:ascii-value="state.asciiStr"
+      v-model:ascii-value.capitalize="state.asciiStr"
       v-model:no-ascii-value="state.noAsciiStr"
-      aria-placeholder="ascii, no-ascii"
-    />
-    <br />
-    <button @click="increment">Count is: {{ state.count }}, double is: {{ double[0] }}</button>
-    <br />
-    <button @click="increment2">Count"1" is: {{ state.count1 }}, double is: {{ double[1]}}</button>
+    >
+      <template #default="asciiSlotProps">
+        <p>{{ asciiSlotProps.displayValue }}</p>
+      </template>
+      <template #foot="{ displayValue: noAsciiDisp }">
+        <p>{{ noAsciiDisp }}</p>
+      </template>
+    </custom-input>
+    <br>
+    <button @click="increment">
+      Count is: {{ state.count }}, double is: {{ double[0] }}
+    </button>
+    <br>
+    <button @click="increment2">
+      Count"1" is: {{ state.count1 }}, double is: {{ double[1] }}
+    </button>
   </div>
-  <HelloWorld :msg="state.asciiStr + state.noAsciiStr" />
+  <HelloWorld :msg="'no-ascii: ' + state.noAsciiStr" />
 </template>
 
 <script lang="ts">
@@ -19,6 +32,10 @@ import { computed, reactive } from "vue";
 import { CustomInput, HelloWorld } from "./components";
 
 export default {
+  components: {
+    HelloWorld,
+    CustomInput,
+  },
   setup() {
     const state = reactive({
       count: 0,
@@ -44,10 +61,6 @@ export default {
       increment,
       increment2,
     };
-  },
-  components: {
-    HelloWorld,
-    CustomInput,
   },
 };
 </script>
